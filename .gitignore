@@ -15,5 +15,5 @@ venv/
 .pytest_cache/
 
 # .gitignore
-.streamlit/secrets.toml
+.streamlit/secrets*
 data/tracks_features.csv

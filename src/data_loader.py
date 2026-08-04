@@ -5,7 +5,7 @@ import numpy as np
 import streamlit as st
 
 # Paste the Direct Download Link you copied from your GitHub Release here:
-DATASET_URL = "https://github.com/bagheeraja/ai110-module3show-musicrecommendersimulation-starter/releases/download/v1.0.0/tracks_features.csv"
+DATASET_URL = "https://github.com/bagheeraja/applied_ai_vectortune/releases/download/v1.0.0/tracks_features.csv"
 
 @st.cache_data
 def initialize_engine(csv_path="data/tracks_features.csv"):
