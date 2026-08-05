@@ -76,7 +76,7 @@ graph TD
 
 Here's a walkthrough of implemented user stories:
 
-![Video Walkthrough](./src/assets/vectortune-app-walkthrough.gif)
+![Video Walkthrough](./assets/vectortune-app-walkthrough.gif)
 
 <!-- Replace this with whatever GIF tool you used! -->
 GIF created with Licecap
