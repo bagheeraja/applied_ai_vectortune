@@ -72,6 +72,15 @@ graph TD
 
 ```
 
+## Video Walkthrough
+
+Here's a walkthrough of implemented user stories:
+
+![Video Walkthrough](./src/assets/vectortune-app-walkthrough.gif)
+
+<!-- Replace this with whatever GIF tool you used! -->
+GIF created with Licecap
+
 ### System Component Breakdown
 
 1. **User Interface (`src/main.py`):** A Streamlit frontend providing query input forms, `st.form` keyboard bindings (supporting **Enter** key submissions), metric displays, and real-time visual progress indicators.
