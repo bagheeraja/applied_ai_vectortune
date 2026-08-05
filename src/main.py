@@ -1,9 +1,18 @@
+
+import os
 import sys
 import json
 import numpy as np
 from tabulate import tabulate
 
-# Absolute package layer imports
+# -------------------------------------------------------------------
+# Dynamically add the directory containing main.py to Python's sys.path
+# -------------------------------------------------------------------
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+if CURRENT_DIR not in sys.path:
+    sys.path.insert(0, CURRENT_DIR)
+
+# Relative imports for files in the same directory
 from data_loader import initialize_engine
 from recommender import apply_scoring_rule, apply_ranking_rule, generate_feature_differentials
 from critique_agent import generate_batch_ai_critiques
@@ -60,10 +69,9 @@ def run_stress_test():
     for name, prefs in STRESS_TEST_PROFILES.items():
         seed_vector = build_seed_vector(prefs, feature_cols)
         scores = apply_scoring_rule(seed_vector, feature_matrix)
-        recommendations = apply_ranking_rule(
-            scores, df, top_n=5,
-            seed_vector=seed_vector, feature_matrix=feature_matrix, feature_cols=feature_cols,
-        )
+        
+        # FIXED: Pass only positional arguments matching updated apply_ranking_rule signature
+        recommendations = apply_ranking_rule(scores, df, top_n=5)
 
         print("=" * 80)
         print(f"Profile: {name}")
@@ -109,10 +117,9 @@ def run_app():
                 # Execute calculation pipelines
                 with st.spinner("Processing linear algebra matching matrix..."):
                     scores = apply_scoring_rule(seed_vector, feature_matrix)
-                    recommendations = apply_ranking_rule(
-                        scores, df, top_n=10,  # Grab extra candidates prior to deduplication
-                        seed_vector=seed_vector, feature_matrix=feature_matrix, feature_cols=feature_cols,
-                    )
+                    
+                    # FIXED: Pass only supported parameters
+                    recommendations = apply_ranking_rule(scores, df, top_n=10)
 
                 # Deduplicate matching tracks (remove the seed song from its own recommendations list)
                 recommendations = recommendations[
@@ -155,16 +162,16 @@ def run_app():
                             st.markdown(f"### {row['name']}")
                             st.markdown(f"*{row['artists']}*")
                             
-                            # Retrieve cached rationale from dictionary
-                            song_key = str(row['name']).lower()
-                            default_fallback = f"Matched based on alignment in key features."
+                            # Retrieve cached rationale from dictionary with normalized key
+                            song_key = str(row['name']).strip().lower()
+                            default_fallback = f"Matched based on alignment in key continuous vector features."
                             rationale = critiques_map.get(song_key, default_fallback)
                             
                             st.markdown("**AI Agent Rationale:**")
                             st.info(rationale)
                             
                         with col2:
-                            st.metric(label="Match", value=f"{row['match_score']}%")
+                            st.metric(label="Match Score", value=f"{row['match_score']}%")
             else:
                 st.error("Song not found in the local database catalog. Please verify spelling.")
         else:
